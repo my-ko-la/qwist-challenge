@@ -1,46 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { UnifiedTxnBuilder } from './Interfaces/UnifiedTxn-Builder.interface';
+import { UnifiedTxnBuilderInterface } from './interfaces/UnifiedTxn-Builder.interface';
 // TODO: fix configs
 // eslint-disable-next-line prettier/prettier
-import { TransactionSource, TransactionType, UnifiedTxnAmount } from 'src/DTO/unified-txn.dto';
+import { TransactionSource, TransactionType, UnifiedTxn, UnifiedTxnAmount } from 'src/DTO/unified-txn.dto';
 
 @Injectable()
-export class UTBuilder implements UnifiedTxnBuilder {
-  constructor(private unifiedTxn: UnifiedTxnBuilder) {}
+export class UnifiedTransactionBuilder implements UnifiedTxnBuilderInterface {
+  private unifiedTxn: UnifiedTxn = {};
 
   withId = (id: string) => {
     this.unifiedTxn.id = id;
-    return this.unifiedTxn;
+    return this;
   };
 
   withCreated = (created: string) => {
     this.unifiedTxn.created = created;
-    return this.unifiedTxn;
+    return this;
   };
 
   withDescription = (description: string) => {
     this.unifiedTxn.description = description;
-    return this.unifiedTxn;
+    return this;
   };
 
   withAmount = (amount: UnifiedTxnAmount) => {
     this.unifiedTxn.amount = amount;
-    return this.unifiedTxn;
+    return this;
   };
 
   withType = (type: TransactionType) => {
     this.unifiedTxn.type = type;
-    return this.unifiedTxn;
+    return this;
   };
 
   withMetadata = (metadata: { source: TransactionSource }) => {
     this.unifiedTxn.metadata = metadata;
-    return this.unifiedTxn;
+    return this;
   };
 
   withReference = (reference: string) => {
     this.unifiedTxn.reference = reference;
-    return this.unifiedTxn;
+    return this;
   };
 
   build = () => {

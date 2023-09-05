@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpService } from '@nestjs/axios';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { MonzoTxnTransformStrategy } from '../monzo-txn-transform-strategy/monzo-txn-transform-strategy.service';
 import { BankApiProvider } from 'src/unified-transaction-builder/interfaces/BankAPIProvider.interface';
 import { z } from 'zod';
@@ -11,12 +9,12 @@ import { MonzoTxn } from 'src/DTO/monzo-txn.dto';
 @Injectable()
 export class MonzoAPIService implements BankApiProvider {
   constructor(
-    private readonly HttpService: HttpService,
-    private readonly MonzoTxnTransformStrategy: MonzoTxnTransformStrategy,
+    private readonly httpService: HttpService,
+    private readonly monzoTxnTransformStrategy: MonzoTxnTransformStrategy,
   ) {}
 
   async getTransactions() {
-    return await this.HttpService.get('http://mocked-apis/api/monzo');
+    return await this.httpService.get('http://mocked-apis/api/monzo');
   }
 
   async serveUnifiedTransactions() {
@@ -27,7 +25,7 @@ export class MonzoAPIService implements BankApiProvider {
           .array(MonzoTxn)
           .parse(txns.data)
           .map((txn) => {
-            return this.MonzoTxnTransformStrategy.transform(txn);
+            return this.monzoTxnTransformStrategy.transform(txn);
           });
       }),
     );

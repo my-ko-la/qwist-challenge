@@ -1,7 +1,6 @@
-import { createZodDto } from 'nestjs-zod';
-import { z } from 'nestjs-zod/z';
+import { z } from 'zod';
 
-const MonzoTxn = z.object({
+export const MonzoTxn = z.object({
   id: z.string(),
   created: z.string(),
   description: z.string(),
@@ -12,4 +11,4 @@ const MonzoTxn = z.object({
   }),
 });
 
-export class MonzoTxnDto extends createZodDto(MonzoTxn) {}
+export type MonzoTxnType = z.infer<typeof MonzoTxn>;

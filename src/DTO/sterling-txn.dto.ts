@@ -1,14 +1,13 @@
-import { createZodDto } from 'nestjs-zod';
-import { z } from 'nestjs-zod/z';
+import { z } from 'zod';
 
-const SterlingTxn = z.object({
+export const SterlingTxn = z.object({
   id: z.string(),
   currency: z.enum(['EUR']),
   amount: z.string(),
-  direction: z.enum(['OUT']),
+  direction: z.enum(['IN', 'OUT']),
   narrative: z.string(),
-  created: z.dateString().format('date-time'),
+  created: z.string(),
   reference: z.string(),
 });
 
-export class SterlingTxnDto extends createZodDto(SterlingTxn) {}
+export type SterlingTxnType = z.infer<typeof SterlingTxn>;

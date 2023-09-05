@@ -3,6 +3,7 @@ import { UnifiedTxnBuilderInterface } from './interfaces/UnifiedTxn-Builder.inte
 // TODO: fix configs
 // eslint-disable-next-line prettier/prettier
 import { TransactionSource, TransactionType, UnifiedTxn, UnifiedTxnAmount } from 'src/DTO/unified-txn.dto';
+import { toUnifiedTxnFormat } from './helpers/toUnifiedTxnFormat';
 
 @Injectable()
 export class UnifiedTransactionBuilder implements UnifiedTxnBuilderInterface {
@@ -24,6 +25,7 @@ export class UnifiedTransactionBuilder implements UnifiedTxnBuilderInterface {
   };
 
   withAmount = (amount: UnifiedTxnAmount) => {
+    amount.value = toUnifiedTxnFormat(amount.value);
     this.unifiedTxn.amount = amount;
     return this;
   };
@@ -44,6 +46,8 @@ export class UnifiedTransactionBuilder implements UnifiedTxnBuilderInterface {
   };
 
   build = () => {
-    return this.unifiedTxn;
+    const unifiedTxn = this.unifiedTxn;
+    this.unifiedTxn = {};
+    return unifiedTxn;
   };
 }

@@ -1,5 +1,4 @@
-import { createZodDto } from 'nestjs-zod';
-import { z } from 'nestjs-zod/z';
+import { z } from 'zod';
 
 export enum TransactionType {
   DEBIT = 'DEBIT',
@@ -19,7 +18,7 @@ export const UnifiedTxnAmount = z.object({
 
 const UnifiedTxn = z.object({
   id: z.string(),
-  created: z.dateString().format('date-time'),
+  created: z.string(),
   description: z.string(),
   amount: UnifiedTxnAmount,
   type: z.nativeEnum(TransactionType),
@@ -29,6 +28,5 @@ const UnifiedTxn = z.object({
   }),
 });
 
-export class UnifiedTxnDto extends createZodDto(UnifiedTxn) {}
 export type UnifiedTxn = z.infer<typeof UnifiedTxn>;
 export type UnifiedTxnAmount = z.infer<typeof UnifiedTxnAmount>;

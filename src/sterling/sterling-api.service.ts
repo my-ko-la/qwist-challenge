@@ -2,21 +2,21 @@ import { Injectable } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpService } from '@nestjs/axios';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { MonzoTxnTransformStrategy } from '../monzo-txn-transform-strategy/monzo-txn-transform-strategy.service';
+import { SterlingTxnTransformStrategy } from '../sterling-txn-transform-strategy/sterling-txn-transform-strategy.service';
 import { BankApiProvider } from 'src/unified-transaction-builder/interfaces/BankAPIProvider.interface';
 import { z } from 'zod';
 import { map } from 'rxjs';
-import { MonzoTxn } from 'src/DTO/monzo-txn.dto';
+import { SterlingTxn } from 'src/DTO/sterling-txn.dto';
 
 @Injectable()
-export class MonzoAPIService implements BankApiProvider {
+export class SterlingAPIService implements BankApiProvider {
   constructor(
     private readonly HttpService: HttpService,
-    private readonly MonzoTxnTransformStrategy: MonzoTxnTransformStrategy,
+    private readonly SterlingTxnTransformStrategy: SterlingTxnTransformStrategy,
   ) {}
 
   async getTransactions() {
-    return await this.HttpService.get('http://mocked-apis/api/monzo');
+    return await this.HttpService.get('http://mocked-apis/api/sterling');
   }
 
   async serveUnifiedTransactions() {
@@ -24,10 +24,10 @@ export class MonzoAPIService implements BankApiProvider {
     return txns.pipe(
       map((txns) => {
         return z
-          .array(MonzoTxn)
+          .array(SterlingTxn)
           .parse(txns.data)
           .map((txn) => {
-            return this.MonzoTxnTransformStrategy.transform(txn);
+            return this.SterlingTxnTransformStrategy.transform(txn);
           });
       }),
     );

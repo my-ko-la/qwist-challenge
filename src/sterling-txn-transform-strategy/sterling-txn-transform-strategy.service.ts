@@ -1,25 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { MonzoTxnType } from 'src/DTO/monzo-txn.dto';
+import { SterlingTxnType } from 'src/DTO/sterling-txn.dto';
 import { TransactionSource, TransactionType } from 'src/DTO/unified-txn.dto';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { UnifiedTransactionBuilder } from 'src/unified-transaction-builder/unified-transaction-builder.service';
 
 @Injectable()
-export class MonzoTxnTransformStrategy {
+export class SterlingTxnTransformStrategy {
   constructor(private readonly UnifiedTransactionBuilder: UnifiedTransactionBuilder) {}
 
-  transform(txn: MonzoTxnType) {
+  transform(txn: SterlingTxnType) {
     return this.UnifiedTransactionBuilder.withId(txn.id)
       .withCreated(txn.created)
-      .withDescription(txn.description)
+      .withDescription(txn.narrative)
       .withAmount({
         // TODO: fix this, and remove last value from
-        value: Number(txn.amount) > 0 ? `${Math.abs(txn.amount)}` : `${txn.amount}`,
+        value: Number(txn.amount) > 0 ? `${Math.abs(Number(txn.amount))}` : `${txn.amount}`,
         currency: txn.currency,
       })
-      .withType(txn.amount > 0 ? TransactionType.CREDIT : TransactionType.DEBIT)
-      .withReference(txn.metadata.reference)
-      .withMetadata({ source: TransactionSource.MONZO })
+      .withType(Number(txn.amount) > 0 ? TransactionType.CREDIT : TransactionType.DEBIT)
+      .withReference(txn.reference)
+      .withMetadata({ source: TransactionSource.STERLING })
       .build();
   }
 }

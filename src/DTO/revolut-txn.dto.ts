@@ -1,10 +1,9 @@
-import { createZodDto } from 'nestjs-zod';
-import { z } from 'nestjs-zod/z';
+import { z } from 'zod';
 
-const RevolutTxn = z.object({
+export const RevolutTxn = z.object({
   id: z.string(),
-  created_at: z.dateString().format('date-time'),
-  completed_at: z.dateString().format('date-time'),
+  created_at: z.string(),
+  completed_at: z.string(),
   state: z.enum(['COMPLETED']),
   amount: z.object({
     value: z.string(),
@@ -18,4 +17,4 @@ const RevolutTxn = z.object({
   reference: z.string(),
 });
 
-export class RevolutTxnDto extends createZodDto(RevolutTxn) {}
+export type RevolutTxnType = z.infer<typeof RevolutTxn>;

@@ -3,6 +3,7 @@ import { RevolutTxnType } from 'src/DTO/revolut-txn.dto';
 import { TransactionSource, TransactionType } from 'src/DTO/unified-txn.dto';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { UnifiedTransactionBuilder } from 'src/unified-transaction-builder/unified-transaction-builder.service';
+import { resolveToFrom } from './helpers/resolveToFrom';
 
 @Injectable()
 export class RevolutTxnTransformStrategy {
@@ -11,7 +12,7 @@ export class RevolutTxnTransformStrategy {
   transform(txn: RevolutTxnType) {
     return this.UnifiedTransactionBuilder.withId(txn.id)
       .withCreated(txn.created_at)
-      .withDescription(`Payment to ${txn.counterparty.name}`)
+      .withDescription(`Payment ${resolveToFrom(txn.amount.value)} ${txn.counterparty.name}`)
       .withAmount({
         // TODO: fix this, and remove last value from
         value: Number(txn.amount.value) > 0 ? `${Math.abs(Number(txn.amount.value))}` : `${txn.amount.value}`,

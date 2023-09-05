@@ -7,14 +7,14 @@ export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
   @Get()
-  getTransactions(@Query('source') source: TransactionSource) {
+  async getTransactions(@Query('source') source: TransactionSource) {
     try {
       if (source) {
-        return this.transactionsService.getSpecificBankTransactions(source);
+        return await this.transactionsService.getSpecificBankTransactions(source);
       }
-      return this.transactionsService.getBankTransactions();
-    } catch (error) {
-      console.log(`ERROR: ${error}`);
+      return await this.transactionsService.getAllBankTransactions();
+    } catch (error: any) {
+      throw error;
     }
   }
 }

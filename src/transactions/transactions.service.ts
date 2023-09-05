@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { lastValueFrom } from 'rxjs';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { forkJoin, lastValueFrom } from 'rxjs';
 import { TransactionSource as TransactionsSource } from 'src/DTO/unified-txn.dto';
 import { MonzoAPIService } from 'src/monzo/monzo-api.service';
 import { RevolutAPIService } from 'src/revolut/revolut-api.service';
@@ -23,18 +23,24 @@ export class TransactionsService {
   }
 
   async getSpecificBankTransactions(source: TransactionsSource) {
-    // TODO: (myko) nest has built-in error handling types
-    if (!this.banks[source]) throw new Error('Requested Bank is not supported');
-    const result = lastValueFrom(await this.banks[source].serveUnifiedTransactions());
-    return result;
+    if (!this.banks[source])
+      throw new BadRequestException({ statusCode: 400, message: 'Either bank does not exist or is not supported' });
+    const transactions = await lastValueFrom(await this.banks[source].serveUnifiedTransactions());
+    return {
+      transactions: transactions,
+    };
   }
 
-  async getBankTransactions() {
+  async getAllBankTransactions() {
     const bankTransactions = {};
     for (const [bank, bankService] of Object.entries(this.banks)) {
-      bankTransactions[bank] = bankService.serveUnifiedTransactions();
+      bankTransactions[bank] = await bankService.serveUnifiedTransactions();
     }
 
-    return Array.from(Object.values(bankTransactions));
+    const allTransactions = Object.values(await lastValueFrom(forkJoin(bankTransactions))).flat();
+
+    return {
+      transactions: allTransactions,
+    };
   }
 }

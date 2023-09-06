@@ -21,6 +21,10 @@ describe('RevolutAPIService test suite', () => {
     revolutAPIService = module.get<RevolutAPIService>(RevolutAPIService);
   });
 
+  afterEach(async () => {
+    jest.clearAllMocks();
+  });
+
   it('should be defined', () => {
     expect(revolutAPIService).toBeDefined();
   });
@@ -46,7 +50,6 @@ describe('RevolutAPIService test suite', () => {
     );
 
     jest.spyOn(revolutAPIService, 'getTransactions').mockReturnValueOnce(mock_Response);
-    // const unifiedTxns = await lastValueFrom(await revolutAPIService.serveUnifiedTransactions());
 
     expect(async () => await lastValueFrom(await revolutAPIService.serveUnifiedTransactions())).rejects.toThrowError();
   });

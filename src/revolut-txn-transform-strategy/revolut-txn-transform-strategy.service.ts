@@ -14,7 +14,6 @@ export class RevolutTxnTransformStrategy {
       .withCreated(txn.created_at)
       .withDescription(`Payment ${resolveToFrom(txn.amount.value)} ${txn.counterparty.name}`)
       .withAmount({
-        // TODO: fix this, and remove last value from
         value: Number(txn.amount.value) > 0 ? `${Math.abs(Number(txn.amount.value))}` : `${txn.amount.value}`,
         currency: txn.amount.currency,
       })

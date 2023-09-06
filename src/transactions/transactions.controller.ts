@@ -7,7 +7,7 @@ export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
   @Get()
-  async getTransactions(@Query('source') source: TransactionSource) {
+  async getTransactions(@Query('source') source?: TransactionSource) {
     try {
       if (source) {
         return await this.transactionsService.getSpecificBankTransactions(source);

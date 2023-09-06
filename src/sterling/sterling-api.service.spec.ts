@@ -21,6 +21,10 @@ describe('sterlingAPIService test suite', () => {
     sterlingAPIService = module.get<SterlingAPIService>(SterlingAPIService);
   });
 
+  afterEach(async () => {
+    jest.clearAllMocks();
+  });
+
   it('should be defined', () => {
     expect(sterlingAPIService).toBeDefined();
   });

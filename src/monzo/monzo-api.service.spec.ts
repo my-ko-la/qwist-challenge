@@ -21,6 +21,10 @@ describe('MonzoAPIService test suite', () => {
     monzoAPIService = module.get<MonzoAPIService>(MonzoAPIService);
   });
 
+  afterEach(async () => {
+    jest.clearAllMocks();
+  });
+
   it('should be defined', () => {
     expect(monzoAPIService).toBeDefined();
   });

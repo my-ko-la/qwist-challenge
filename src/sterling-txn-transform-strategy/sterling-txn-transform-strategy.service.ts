@@ -13,7 +13,6 @@ export class SterlingTxnTransformStrategy {
       .withCreated(txn.created)
       .withDescription(txn.narrative)
       .withAmount({
-        // TODO: fix this, and remove last value from
         value: Number(txn.amount) > 0 ? `${Math.abs(Number(txn.amount))}` : `${txn.amount}`,
         currency: txn.currency,
       })

@@ -16,8 +16,6 @@ export class MockAPIService {
       const txns = JSON.parse(mockedData);
 
       nock(`http://mocked-apis`).get(`/api/${bank}`).times(Infinity).reply(200, txns);
-
-      //  console.log(apis)
     }
   };
 }

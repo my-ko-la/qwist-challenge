@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { UnifiedTxnBuilderInterface } from './interfaces/UnifiedTxn-Builder.interface';
-// TODO: fix configs
-// eslint-disable-next-line prettier/prettier
 import { TransactionSource, TransactionType, UnifiedTxn, UnifiedTxnAmount } from 'src/DTO/unified-txn.dto';
 import { toUnifiedTxnFormat } from './helpers/toUnifiedTxnFormat';
 

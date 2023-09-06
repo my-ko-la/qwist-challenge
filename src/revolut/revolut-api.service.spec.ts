@@ -37,6 +37,19 @@ describe('RevolutAPIService test suite', () => {
 
     expect(unifiedTxns).toStrictEqual(unifiedRevolutTxnsFromMock);
   });
+
+  it('should fetch Revolut txns, try to transform, but fail, given wrong data shape', async () => {
+    const mock_Response = Promise.resolve(
+      of({
+        data: 'random string',
+      } as unknown as AxiosResponse),
+    );
+
+    jest.spyOn(revolutAPIService, 'getTransactions').mockReturnValueOnce(mock_Response);
+    // const unifiedTxns = await lastValueFrom(await revolutAPIService.serveUnifiedTransactions());
+
+    expect(async () => await lastValueFrom(await revolutAPIService.serveUnifiedTransactions())).rejects.toThrowError();
+  });
 });
 
 export const mock_RevolutTransactions: Array<RevolutTxnType> = [

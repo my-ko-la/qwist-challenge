@@ -37,6 +37,18 @@ describe('sterlingAPIService test suite', () => {
 
     expect(unifiedTxns).toStrictEqual(unifiedSterlingTxnsFromMock);
   });
+
+  it('should fetch Sterling txns, try to transform, but fail, given wrong data shape', async () => {
+    const mock_Response = Promise.resolve(
+      of({
+        data: 'hello world',
+      } as unknown as AxiosResponse),
+    );
+
+    jest.spyOn(sterlingAPIService, 'getTransactions').mockReturnValueOnce(mock_Response);
+
+    expect(async () => await lastValueFrom(await sterlingAPIService.serveUnifiedTransactions())).rejects.toThrowError();
+  });
 });
 
 export const mock_SterlingTransactions: Array<SterlingTxnType> = [

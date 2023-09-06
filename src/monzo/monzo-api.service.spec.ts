@@ -37,6 +37,18 @@ describe('MonzoAPIService test suite', () => {
 
     expect(unifiedTxns).toStrictEqual(unifiedMonzoTxnsFromMock);
   });
+
+  it('should fetch Monzo txns, try to transform, but fail, given wrong data shape', async () => {
+    const mock_Response = Promise.resolve(
+      of({
+        data: 'hello world',
+      } as unknown as AxiosResponse),
+    );
+
+    jest.spyOn(monzoAPIService, 'getTransactions').mockReturnValueOnce(mock_Response);
+
+    expect(async () => await lastValueFrom(await monzoAPIService.serveUnifiedTransactions())).rejects.toThrowError();
+  });
 });
 
 export const mock_MonzoTransactions: Array<MonzoTxnType> = [

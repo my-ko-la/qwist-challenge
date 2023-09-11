@@ -3,9 +3,9 @@ import * as nock from 'nock';
 import { promises } from 'fs';
 
 const ABSOLUTE_PATHS_TO_MOCKS = {
-  monzo: '../finleap-challenge/src/samples/monzo-tx.json',
-  revolut: '../finleap-challenge/src/samples/revolut-tx.json',
-  sterling: '../finleap-challenge/src/samples/sterling-tx.json',
+  monzo: './src/samples/monzo-tx.json',
+  revolut: './src/samples/revolut-tx.json',
+  sterling: './src/samples/sterling-tx.json',
 };
 
 @Injectable()
